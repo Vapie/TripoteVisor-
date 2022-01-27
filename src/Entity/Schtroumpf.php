@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ApiResource]
+#[ApiResource(security: "is_granted('contains_sch',object)")]
 #[ORM\Entity(repositoryClass: SchtroumpfRepository::class)]
 class Schtroumpf
 {
