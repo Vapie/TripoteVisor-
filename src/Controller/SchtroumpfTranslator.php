@@ -8,16 +8,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SchtroumpfTranslator extends AbstractController
 {
-    #[Route('/', name: 'home')]
-    public function index(): Response
+    public function translateToSchtroumpf(string $string): string
     {
-        $string = "";
-
         $array = explode(" ", $string);
         $currentIndex = 0;
-        $subjectSingularList = ["je", "il", "elle", "l'on", "qu'il", "qu'elle", "qu'on"];
+        $subjectSingularList = ["je", "il", "elle", "l'on", "qu'il", "qu'elle", "qu'on", "j'vais", "j'te", "j'me", "lui"];
         $subjectPlurialList = ["ils", "elles", "qu'ils", "qu'elles"];
-        $subjectAuxiliarList = ["avoir", "suis", "été", "fait", "est", "de", "pour", "ayant", "j'ai", "en", "peux", "peut", "veux", "veut"];
+        $subjectAuxiliarList = ["avoir", "suis", "été", "fait", "est", "de", "pour", "ayant", "j'ai", "en", "peux", "peut", "veux", "veut", "y", "qui"];
 
         foreach($array as $word){
             $word = strtolower($word);
@@ -40,11 +37,14 @@ class SchtroumpfTranslator extends AbstractController
                 else if(str_ends_with($array[$currentIndex+1], 'ées')){
                     $array[$currentIndex+1] = "schtroumpfées";
                 }
-                else if(str_ends_with($array[$currentIndex+1], 'er') or str_ends_with($array[$currentIndex+1], 'ir') or str_ends_with($array[$currentIndex+1], 'dre') or str_ends_with($array[$currentIndex+1], 'tre')){
+                else if(str_ends_with($array[$currentIndex+1], 'er') or str_ends_with($array[$currentIndex+1], 'ir') or str_ends_with($array[$currentIndex+1], 'dre') or str_ends_with($array[$currentIndex+1], 'tre') or str_ends_with($array[$currentIndex+1], 're')){
                     $array[$currentIndex+1] = "schtroumpfer";
                 }
                 else if(str_ends_with($array[$currentIndex+1], 'ant')){
                     $array[$currentIndex+1] = "schtroumpfant";
+                }
+                else if(str_ends_with($array[$currentIndex+1], 'ent')){
+                    $array[$currentIndex+1] = "schtroumpfent";
                 }   
             }
             else if (str_starts_with($word, "d'")and str_ends_with($word, 'er') or str_starts_with($word, "d'") and str_ends_with($word, 'ir') or str_ends_with($word, 'tre')){
@@ -53,13 +53,16 @@ class SchtroumpfTranslator extends AbstractController
             else if (str_starts_with($word, "s'")and str_ends_with($word, 'er')){
                 $word = "se schtroumpfer";
             }
+            else if($word == "tu"){
+                $array[$currentIndex+1] = "schtroumpfs";
+            }
             else if($word == "nous"){
                 $array[$currentIndex+1] = "schtroumpfons";
             }
             else if($word == "vous"){
                 $array[$currentIndex+1] = "schtroumpfez";
             }
-            else if(str_ends_with($word, 'er') or str_ends_with($word, 'ir') or str_ends_with($word, 'dre') or str_ends_with($word, 'tre')){
+            else if(str_ends_with($word, 'er') or str_ends_with($word, 'ir') or str_ends_with($word, 'dre') or str_ends_with($word, 'tre') or str_ends_with($word, 're')){
                 $word = "schtroumpfer";
             }
             else if(str_ends_with($word, 'ant') and $word != "ayant"){
@@ -68,9 +71,7 @@ class SchtroumpfTranslator extends AbstractController
             
             $currentIndex ++;
         }
-        print_r(implode(" ", $array));
-        
-        return new Response();
+        return implode(" ", $array);
     }
 }
 
