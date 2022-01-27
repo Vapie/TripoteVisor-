@@ -6,6 +6,7 @@
 parameters:
 
 services:
+
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
@@ -20,6 +21,7 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Tests/'
-
+    App\DataPersister\ReviewDataPersister:
+        decorates: 'api_platform.doctrine.orm.data_persister'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

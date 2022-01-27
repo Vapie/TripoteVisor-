@@ -2,13 +2,24 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\SchtroumpfRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ApiResource(security: "is_granted('contains_sch',object)")]
+//#[ApiResource(security: "is_granted('contains_sch',object)")]
+#[ApiResource(
+    attributes: ["security" => "is_granted('ROLE_USER')"],
+    collectionOperations: [
+        "get",
+        "post" => ["security_post_denormalize" => "is_granted('create_schtroumpf',object)"]
+    ],
+    itemOperations: [
+        "get",
+        "put" => ["security" => "is_granted('edit_schtroumpf',object)"]
+    ],)]
 #[ORM\Entity(repositoryClass: SchtroumpfRepository::class)]
 class Schtroumpf
 {
@@ -51,7 +62,9 @@ class Schtroumpf
 
     /**
      * @return Collection|SchtroumpfJob[]
+     *
      */
+    #[ApiProperty(security:"false")]
     public function getSchtroumpfJobs(): Collection
     {
         return $this->schtroumpfJobs;

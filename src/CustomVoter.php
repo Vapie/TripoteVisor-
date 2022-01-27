@@ -1,11 +1,9 @@
 <?php
 
-namespace App;
-
-
 
 namespace App;
 
+    use App\Entity\Review;
     use App\Entity\Schtroumpf;
     use App\Entity\SchtroumpfJob;
     use App\Entity\User;
@@ -18,24 +16,34 @@ class CustomVoter extends Voter
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
 
-        $user = $token->getUser();
+       if ($attribute == "create_review"){
+           $user = $token->getUser();
 
-        if (!$user instanceof User) {
-            // the user must be logged in; if not, deny access
-            return false;
-        }
+           if (!$user instanceof User) {
+               // the user must be logged in; if not, deny access
+               return false;
+           }
 
 
-        /** @var Schtroumpf $schtroumpf */
-        $schtroumpf = $subject;
+           /** @var Review $review */
+           $review = $subject;
 
-        foreach ($schtroumpf->getSchtroumpfJobs() as $value) {
-            /** @var SchtroumpfJob $job */
-            $job = $value;
-            if ($job . $user == $user) {
-                return true;
-            }
-        }
+           foreach ($review->getSchtroumpf()->getSchtroumpfJobs() as $job){
+                if ($job->getUser() == $user){
+//                   dd("yo");
+                    return true;
+                }
+           }
+           dd($review);
+//        foreach ($schtroumpf->getSchtroumpfJobs() as $value) {
+//            /** @var SchtroumpfJob $job */
+//            $job = $value;
+//            if ($job . $user == $user) {
+//                return true;
+//            }
+//        }
+       }
+
         return false;
 
     }
@@ -44,15 +52,11 @@ class CustomVoter extends Voter
     {
 
         // if the attribute isn't one we support, return false
-        if (!in_array($attribute, ["contains_sch"])) {
+        if (!in_array($attribute, ["contains_sch","edit_review","create_review","edit_schtroumpf","create_schtroumpf"])) {
             return false;
         }
 
 
-        // only vote on `Post` objects
-        if (!$subject instanceof Schtroumpf) {
-            return false;
-        }
         return true;
 
     }

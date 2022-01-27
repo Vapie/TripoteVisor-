@@ -34,6 +34,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: SchtroumpfJob::class, orphanRemoval: true)]
     private $schtroumpfJobs;
 
+
+
     public function __construct()
     {
         $this->schtroumpfJobs = new ArrayCollection();
@@ -138,4 +140,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+
 }
