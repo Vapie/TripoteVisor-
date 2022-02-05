@@ -6,7 +6,15 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ReviewRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        "get",
+        "post" => ["security_post_denormalize" => "is_granted('create_review',object)"]
+    ],
+    itemOperations: [
+        "get",
+        "put" => ["security" => "is_granted('edit_review',object)"]
+    ],)]
 #[ORM\Entity(repositoryClass: ReviewRepository::class)]
 class Review
 {
