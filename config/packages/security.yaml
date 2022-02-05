@@ -1,4 +1,9 @@
 security:
+
+    role_hierarchy:
+        ROLE_API: ROLE_USER
+        ROLE_ADMIN: ROLE_API
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
     enable_authenticator_manager: true
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
@@ -13,21 +18,17 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            stateless: true
-            provider: app_user_provider
             json_login:
-                check_path: /authentication_token
-                username_path: email
-                password_path: password
-                success_handler: lexik_jwt_authentication.handler.authentication_success
-                failure_handler: lexik_jwt_authentication.handler.authentication_failure
-            jwt: ~
-
+                check_path: api_login
+            custom_authenticators:
+                - App\Security\ApiKeyAuthenticator
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
@@ -37,6 +38,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        - { path: ^/api, roles: ROLE_API }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 

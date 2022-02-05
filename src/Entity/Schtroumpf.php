@@ -14,11 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
     attributes: ["security" => "is_granted('ROLE_USER')"],
     collectionOperations: [
         "get",
-        "post" => ["security_post_denormalize" => "is_granted('create_schtroumpf',object)"]
+        "post" => ["security_post_denormalize" => "is_granted('ROLE_ADMIN')"]
     ],
     itemOperations: [
-        "get",
-        "put" => ["security" => "is_granted('edit_schtroumpf',object)"]
+        "get"
     ],)]
 #[ORM\Entity(repositoryClass: SchtroumpfRepository::class)]
 class Schtroumpf

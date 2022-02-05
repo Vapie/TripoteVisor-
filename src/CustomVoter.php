@@ -15,26 +15,25 @@ class CustomVoter extends Voter
 {
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
+        //TODO
 
        if ($attribute == "create_review"){
            $user = $token->getUser();
-
            if (!$user instanceof User) {
                // the user must be logged in; if not, deny access
                return false;
            }
 
-
            /** @var Review $review */
            $review = $subject;
 
            foreach ($review->getSchtroumpf()->getSchtroumpfJobs() as $job){
-                if ($job->getUser() == $user){
-//                   dd("yo");
+
+                if ($job->getUser() == $user and ($job->getRole() == "ADMIN" or $job->getRole() == "CREATOR")){
                     return true;
                 }
            }
-           dd($review);
+           return false;
 //        foreach ($schtroumpf->getSchtroumpfJobs() as $value) {
 //            /** @var SchtroumpfJob $job */
 //            $job = $value;
@@ -44,7 +43,33 @@ class CustomVoter extends Voter
 //        }
        }
 
-        return false;
+        if ($attribute == "edit_review"){
+            $user = $token->getUser();
+            if (!$user instanceof User) {
+                // the user must be logged in; if not, deny access
+                return false;
+            }
+
+            /** @var Review $review */
+            $review = $subject;
+
+            foreach ($review->getSchtroumpf()->getSchtroumpfJobs() as $job){
+
+                if ($job->getUser() == $user and $job->getRole() == "ADMIN" ){
+                    return true;
+                }
+            }
+            return false;
+//        foreach ($schtroumpf->getSchtroumpfJobs() as $value) {
+//            /** @var SchtroumpfJob $job */
+//            $job = $value;
+//            if ($job . $user == $user) {
+//                return true;
+//            }
+//        }
+        }
+
+        return true;
 
     }
 
@@ -52,10 +77,9 @@ class CustomVoter extends Voter
     {
 
         // if the attribute isn't one we support, return false
-        if (!in_array($attribute, ["contains_sch","edit_review","create_review","edit_schtroumpf","create_schtroumpf"])) {
+        if (!in_array($attribute, ["edit_review","create_review"])) {
             return false;
         }
-
 
         return true;
 

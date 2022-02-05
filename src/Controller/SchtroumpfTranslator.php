@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SchtroumpfTranslator extends AbstractController
 {
-    public function translateToSchtroumpf(string $string): string
+    public static function translateToSchtroumpf(string $string): string
     {
         $array = explode(" ", $string);
         $currentIndex = 0;
