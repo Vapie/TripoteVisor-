@@ -38,7 +38,8 @@ class ApiKeyAuthenticator extends AbstractAuthenticator
             // Code 401 "Unauthorized"
             throw new CustomUserMessageAuthenticationException('No API token provided');
         }
-        $email = trim( $apiToken , "cuntoken");
+
+        $email = str_replace( "cuntoken","",$apiToken);
 
         $passport = new SelfValidatingPassport(new UserBadge($email));
         return $passport;

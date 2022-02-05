@@ -1,7 +1,16 @@
 SchtroupfVisor permet de schtroumpfer les avis clients et de pouvoir schtroupfer la base de schtroumpf client pour plusieurs schtroumpf
 
+( PHP 8.03 symfony cli v4.23.5 et windows 11 (tout disfonctionnement du à Linux ou Macosne sera pas pris en charge, merci d'installer windows 11 pour lance ce programme dans les meilleures conditions ))
+
+Voici les étapes à réaliser pour l'install
 
 1-composer install
+
+2-php bin/console d:s:u --force
+
+3-php bin/console d:f:l
+
+
 
 
 
@@ -39,6 +48,9 @@ ici on n'as accès à cette route que si on est enregistré dans la base comme A
 ![img_7.png](img_7.png)
     -register un site token + role ( il faut être ADMIN pour le faire ) Done
 ![img_8.png](img_8.png)
-Le service de schtroumpfage des textes DOne les textes des reviews sont modifiés pour être schtroumfés
+Le service de schtroumpfage des textes Done les textes des reviews sont modifiés pour être schtroumfés
 
-faire un jeu de données dans les fixtures 
+Les Données sont générées grace aux fixtures 
+voici les users générés pa les fixtures
+![img_9.png](img_9.png)
+il faut utiliser les emails dans le champ username de la route login , et le mot de passe est password
